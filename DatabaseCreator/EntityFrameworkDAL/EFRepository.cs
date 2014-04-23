@@ -39,7 +39,7 @@ namespace EntityFrameworkDAL
 			_context.SaveChanges();
 		}
 
-		public IEnumerable<Database> Databases
+		public IQueryable<Database> Databases
 		{
 			get { return _context.Databases; }
 		}
@@ -68,7 +68,7 @@ namespace EntityFrameworkDAL
 			_context.SaveChanges();
 		}
 
-		public IEnumerable<Property> Properties
+		public IQueryable<Property> Properties
 		{
 			get { return _context.Properties; }
 		}
@@ -97,7 +97,7 @@ namespace EntityFrameworkDAL
 			_context.SaveChanges();
 		}
 
-		public IEnumerable<Relationship> Relationships
+		public IQueryable<Relationship> Relationships
 		{
 			get { return _context.Relationsips; }
 		}
@@ -125,7 +125,7 @@ namespace EntityFrameworkDAL
 			_context.SaveChanges();
 		}
 
-		public IEnumerable<Domain.Type> Types
+		public IQueryable<Domain.Type> Types
 		{
 			get { return _context.Types; }
 		}
