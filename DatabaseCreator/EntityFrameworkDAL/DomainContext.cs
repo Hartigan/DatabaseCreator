@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace EntityFrameworkDAL
 {
-	public class DomainContext : DbContext
+	class DomainContext : DbContext
 	{
 		public DomainContext() : base("CoreDatabaseConnectionString")
 		{
-			
+
 		}
 
 		public DbSet<Domain.Database> Databases { get; set; }

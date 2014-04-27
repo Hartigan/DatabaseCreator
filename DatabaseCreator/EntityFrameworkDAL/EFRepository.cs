@@ -8,7 +8,7 @@ using Domain.Interfaces;
 
 namespace EntityFrameworkDAL
 {
-	class EFRepository : IRepository
+	public class EFRepository : IRepository
 	{
 		private DomainContext _context;
 		public EFRepository()

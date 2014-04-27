@@ -13,5 +13,7 @@ namespace Domain
 		public string Name { get; set; }
 
 		public Database Database { get; set; }
+
+		public virtual ICollection<Property> Properies { get; set; }
 	}
 }
