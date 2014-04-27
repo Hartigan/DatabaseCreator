@@ -14,6 +14,10 @@ namespace Domain
 
 		public bool IsIndexed { get; set; }
 
+		public bool IsReqired { get; set; }
+
+		public bool IsUnique { get; set; }
+
 		[MaxLength(32)]
 		public string SqlType { get; set; }
 
