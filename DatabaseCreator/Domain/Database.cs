@@ -13,5 +13,8 @@ namespace Domain
 
 		[MaxLength(128)]
 		public string DatabaseName { get; set; }
+
+		[MaxLength(128)]
+		public string ServerName { get; set; }
 	}
 }

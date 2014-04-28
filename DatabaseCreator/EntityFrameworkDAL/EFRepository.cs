@@ -29,6 +29,7 @@ namespace EntityFrameworkDAL
 			obj.DatabaseName = database.DatabaseName;
 			obj.Modified = database.Modified;
 			obj.ServerName = database.ServerName;
+			obj.ServerConnectionString = database.ServerConnectionString;
 			_context.SaveChanges();
 		}
 
@@ -55,6 +56,8 @@ namespace EntityFrameworkDAL
 			Property obj = _context.Properties.Single(x => x.Id == property.Id);
 			obj.Created = property.Created;
 			obj.IsIndexed = property.IsIndexed;
+			obj.IsReqired = property.IsReqired;
+			obj.IsUnique = property.IsUnique;
 			obj.Modified = property.Modified;
 			obj.Name = property.Name;
 			obj.SqlType = property.SqlType;
@@ -87,6 +90,7 @@ namespace EntityFrameworkDAL
 			obj.Modified = relationship.Modified;
 			obj.Name = relationship.Name;
 			obj.ParentType = relationship.ParentType;
+			obj.Database = relationship.Database;
 			_context.SaveChanges();
 		}
 
