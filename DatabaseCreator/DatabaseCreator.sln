@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseGenerator", "Databa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTestApp", "ConsoleTestApp\ConsoleTestApp.csproj", "{127E6818-65DB-44A5-B98F-6B8CDED8162E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreManager", "CoreManager\CoreManager.csproj", "{AF70561A-14EB-4CC0-B52E-ADF80128A449}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "Exceptions\Exceptions.csproj", "{9E0DE38B-D45A-4BA5-A76E-93314CE4489B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{127E6818-65DB-44A5-B98F-6B8CDED8162E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{127E6818-65DB-44A5-B98F-6B8CDED8162E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{127E6818-65DB-44A5-B98F-6B8CDED8162E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF70561A-14EB-4CC0-B52E-ADF80128A449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF70561A-14EB-4CC0-B52E-ADF80128A449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF70561A-14EB-4CC0-B52E-ADF80128A449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF70561A-14EB-4CC0-B52E-ADF80128A449}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E0DE38B-D45A-4BA5-A76E-93314CE4489B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E0DE38B-D45A-4BA5-A76E-93314CE4489B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E0DE38B-D45A-4BA5-A76E-93314CE4489B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E0DE38B-D45A-4BA5-A76E-93314CE4489B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
