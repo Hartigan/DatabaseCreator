@@ -68,6 +68,7 @@ namespace EntityFrameworkDAL
 		public void RemoveProperty(int propertyId)
 		{
 			Property obj = _context.Properties.Single(x => x.Id == propertyId);
+			_context.Properties.Remove(obj);
 			_context.SaveChanges();
 		}
 
