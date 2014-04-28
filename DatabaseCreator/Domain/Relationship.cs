@@ -14,5 +14,7 @@ namespace Domain
 		public Type ParentType { get; set; }
 
 		public Type ChildType { get; set; }
+
+		public Database Database { get; set; }
 	}
 }

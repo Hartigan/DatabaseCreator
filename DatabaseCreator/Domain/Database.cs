@@ -8,8 +8,8 @@ namespace Domain
 {
 	public class Database : BaseClass
 	{
-		[MaxLength(128)]
-		public string ServerName { get; set; }
+		[MaxLength(256)]
+		public string ServerConnectionString { get; set; }
 
 		[MaxLength(128)]
 		public string DatabaseName { get; set; }

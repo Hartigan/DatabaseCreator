@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFrameworkDAL", "EntityFrameworkDAL\EntityFrameworkDAL.csproj", "{A9F36027-5DED-4304-9172-06B3DA8C3848}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseGenerator", "DatabaseGenerator\DatabaseGenerator.csproj", "{1F19D1D0-B7BB-4450-B352-5C1B77E8A687}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTestApp", "ConsoleTestApp\ConsoleTestApp.csproj", "{127E6818-65DB-44A5-B98F-6B8CDED8162E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{A9F36027-5DED-4304-9172-06B3DA8C3848}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9F36027-5DED-4304-9172-06B3DA8C3848}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9F36027-5DED-4304-9172-06B3DA8C3848}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F19D1D0-B7BB-4450-B352-5C1B77E8A687}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F19D1D0-B7BB-4450-B352-5C1B77E8A687}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F19D1D0-B7BB-4450-B352-5C1B77E8A687}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F19D1D0-B7BB-4450-B352-5C1B77E8A687}.Release|Any CPU.Build.0 = Release|Any CPU
+		{127E6818-65DB-44A5-B98F-6B8CDED8162E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{127E6818-65DB-44A5-B98F-6B8CDED8162E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{127E6818-65DB-44A5-B98F-6B8CDED8162E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{127E6818-65DB-44A5-B98F-6B8CDED8162E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
