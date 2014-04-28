@@ -11,10 +11,10 @@ namespace Domain
 	{
 		[MaxLength(128)]
 		public string Name { get; set; }
-		public Type ParentType { get; set; }
+		public virtual Type ParentType { get; set; }
 
-		public Type ChildType { get; set; }
+		public virtual Type ChildType { get; set; }
 
-		public Database Database { get; set; }
+		public virtual Database Database { get; set; }
 	}
 }
