@@ -12,43 +12,59 @@ namespace CoreManager
 {
 	public class DataManager
 	{
-		public XDocument GetObjectsByType(Domain.Type type)
+		public XDocument GetObjectsByType(XDocument types)
 		{
 			XDocument result = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
 			XElement root = new XElement("objects");
 			result.Add(root);
-			SqlConnection connection = new SqlConnection(type.Database.ServerConnectionString);
 
-			string columnNames = "Id," + string.Join(",", type.Properies.Select(x => x.Name));
-			StringBuilder query = new StringBuilder();
-			query.AppendLine("USE [" + type.Database.DatabaseName + "]");
-			query.Append("SELECT ");
-			query.AppendLine(columnNames);
-			query.AppendLine("FROM [" + type.Name + "]");
-
-			try
+			XElement objectTypes = types.Element("objects");
+			foreach(XElement xmlType in objectTypes.Elements("object"))
 			{
-				connection.Open();
-				SqlCommand command = new SqlCommand(query.ToString(), connection);
-				SqlDataReader dataReader = command.ExecuteReader();
-				while(dataReader.Read())
+				string strTypeId = xmlType.Attribute("typeId").Value;
+				int typeId;
+				if (!int.TryParse(strTypeId, out typeId))
 				{
-					XElement xmlObject = new XElement("object");
-					xmlObject.Add(new XAttribute("type",type.Name));
-					xmlObject.Add(new XAttribute("id",dataReader["Id"].ToString()));
-					xmlObject.Add(new XAttribute("typeId",type.Id));
-					foreach(Domain.Property property in type.Properies)
-					{
-						XElement xmlProperty = new XElement(property.Name, dataReader[property.Name]);
-						xmlObject.Add(xmlProperty);
-					}
-					root.Add(xmlObject);
+					throw new DataManagerException("Invalid typeId");
 				}
-				connection.Close();
-			}
-			catch (Exception ex)
-			{
-				throw new DataManagerException("Invalid operation", ex);
+				using(Domain.Interfaces.IRepository repository = new EntityFrameworkDAL.EFRepository())
+				{
+					Domain.Type type = repository.Types.Single(x=>x.Id == typeId);
+
+					SqlConnection connection = new SqlConnection(type.Database.ServerConnectionString);
+
+					string columnNames = "Id," + string.Join(",", type.Properies.Select(x => x.Name));
+					StringBuilder query = new StringBuilder();
+					query.AppendLine("USE [" + type.Database.DatabaseName + "]");
+					query.Append("SELECT ");
+					query.AppendLine(columnNames);
+					query.AppendLine("FROM [" + type.Name + "]");
+
+					try
+					{
+						connection.Open();
+						SqlCommand command = new SqlCommand(query.ToString(), connection);
+						SqlDataReader dataReader = command.ExecuteReader();
+						while(dataReader.Read())
+						{
+							XElement xmlObject = new XElement("object");
+							xmlObject.Add(new XAttribute("type",type.Name));
+							xmlObject.Add(new XAttribute("id",dataReader["Id"].ToString()));
+							xmlObject.Add(new XAttribute("typeId",type.Id));
+							foreach(Domain.Property property in type.Properies)
+							{
+								XElement xmlProperty = new XElement(property.Name, dataReader[property.Name]);
+								xmlObject.Add(xmlProperty);
+							}
+							root.Add(xmlObject);
+						}
+						connection.Close();
+					}
+					catch (Exception ex)
+					{
+						throw new DataManagerException("Invalid operation", ex);
+					}
+				}
 			}
 
 			return result;
@@ -225,6 +241,161 @@ namespace CoreManager
 					{
 						throw new DataManagerException("Object wasn't updated", ex);
 					}
+				}
+			}
+		}
+
+		public XDocument GetRelationshipsForObject(XDocument relationshipsDoc)
+		{
+			XDocument result;
+			XElement root;
+			SqlConnection connection;
+			StringBuilder query;
+			using(Domain.Interfaces.IRepository repository = new EntityFrameworkDAL.EFRepository())
+			{
+				try
+				{
+					XElement relationshipsRoot = relationshipsDoc.Element("relationships");
+					int parentId = int.Parse(relationshipsRoot.Attribute("parentId").Value);
+					int typeId = int.Parse(relationshipsRoot.Attribute("parentTypeId").Value);
+
+					Domain.Type type = repository.Types.Single(x=>x.Id == typeId);
+
+					result = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
+					root = new XElement("relationships", new XAttribute("parentId", parentId),
+																new XAttribute("parentTypeId", type.Id),
+																new XAttribute("parentTypeName",type.Name));
+					result.Add(root);
+					connection = new SqlConnection(type.Database.ServerConnectionString);
+					connection.Open();
+
+					List<Domain.Relationship> relationships = repository.Relationships.Where(x => x.ParentType.Id == type.Id).ToList();
+					foreach (Domain.Relationship relationship in relationships)
+					{
+						XElement xmlRelationship = new XElement("relationship", new XAttribute("name", relationship.Name),
+																				new XAttribute("relationshipId", relationship.Id));
+						root.Add(xmlRelationship);
+
+						string columnNames = "ch.Id," + string.Join(",", type.Properies.Select(x => "ch."+x.Name));
+						query = new StringBuilder();
+						query.AppendLine("USE [" + type.Database.DatabaseName + "]");
+						query.Append("SELECT ");
+						query.AppendLine(columnNames);
+						query.AppendLine("FROM [" + relationship.Name + "] rel");
+						query.AppendLine("INNER JOIN [" + relationship.ChildType.Name + "] ch");
+						query.AppendLine("ON rel.Child = ch.Id");
+						query.AppendLine("WHERE rel.Parent = " + parentId);
+
+						SqlCommand command = new SqlCommand(query.ToString(), connection);
+						SqlDataReader dataReader = command.ExecuteReader();
+						while (dataReader.Read())
+						{
+							XElement xmlObject = new XElement("object");
+							xmlObject.Add(new XAttribute("type", type.Name));
+							xmlObject.Add(new XAttribute("id", dataReader["Id"].ToString()));
+							xmlObject.Add(new XAttribute("typeId", type.Id));
+							foreach (Domain.Property property in type.Properies)
+							{
+								XElement xmlProperty = new XElement(property.Name, dataReader[property.Name]);
+								xmlObject.Add(xmlProperty);
+							}
+							xmlRelationship.Add(xmlObject);
+						}
+
+					}
+
+					connection.Close();
+				}
+				catch (Exception ex)
+				{
+					throw new DataManagerException("Invalid operation", ex);
+				}
+				
+			}
+
+
+			return result;
+		}
+
+		public void AddRelationshipsForObject(XDocument relationshipsDoc)
+		{
+			using(Domain.Interfaces.IRepository repository = new EntityFrameworkDAL.EFRepository())
+			{
+				try
+				{
+					XElement root = relationshipsDoc.Element("relationships");
+					int parentTypeId = int.Parse(root.Attribute("parentTypeId").Value);
+					int parentId = int.Parse(root.Attribute("parentId").Value);
+
+					Domain.Type parentType = repository.Types.Single(x => x.Id == parentTypeId);
+
+					StringBuilder query = new StringBuilder();
+					query.AppendLine("USE [" + parentType.Database.DatabaseName + "]");
+
+					foreach (XElement xmlRelationship in root.Elements("relationship"))
+					{
+						int relationshipId = int.Parse(xmlRelationship.Attribute("relationshipId").Value);
+						Domain.Relationship relationship = repository.Relationships.Single(x => x.Id == relationshipId);
+
+						foreach(XElement xmlObject in xmlRelationship.Elements("object"))
+						{
+							int childId = int.Parse(xmlObject.Attribute("id").Value);
+							query.AppendLine("INSERT INTO [" + relationship.Name + "]");
+							query.AppendLine("(Parent, Child)");
+							query.AppendLine("VALUES");
+							query.AppendLine("("+ parentId +"," + childId + ")");
+						}
+					}
+					SqlConnection connection = new SqlConnection(parentType.Database.ServerConnectionString);
+					connection.Open();
+					SqlCommand command = new SqlCommand(query.ToString(), connection);
+					command.ExecuteNonQuery();
+					connection.Close();
+				}
+				catch(Exception ex)
+				{
+					throw new DataManagerException("Relationship wasn't added",ex);
+				}
+			}
+		}
+
+		public void DeleteRelationshipsForObject(XDocument relationshipsDoc)
+		{
+			using (Domain.Interfaces.IRepository repository = new EntityFrameworkDAL.EFRepository())
+			{
+				try
+				{
+					XElement root = relationshipsDoc.Element("relationships");
+					int parentTypeId = int.Parse(root.Attribute("parentTypeId").Value);
+					int parentId = int.Parse(root.Attribute("parentId").Value);
+
+					Domain.Type parentType = repository.Types.Single(x => x.Id == parentTypeId);
+
+					StringBuilder query = new StringBuilder();
+					query.AppendLine("USE [" + parentType.Database.DatabaseName + "]");
+
+					foreach (XElement xmlRelationship in root.Elements("relationship"))
+					{
+						int relationshipId = int.Parse(xmlRelationship.Attribute("relationshipId").Value);
+						Domain.Relationship relationship = repository.Relationships.Single(x => x.Id == relationshipId);
+
+						foreach (XElement xmlObject in xmlRelationship.Elements("object"))
+						{
+							int childId = int.Parse(xmlObject.Attribute("id").Value);
+							query.AppendLine("DELETE FROM [" + relationship.Name + "]");
+							query.AppendLine("WHERE");
+							query.AppendLine("Parent = " + parentId + " AND Child = " + childId);
+						}
+					}
+					SqlConnection connection = new SqlConnection(parentType.Database.ServerConnectionString);
+					connection.Open();
+					SqlCommand command = new SqlCommand(query.ToString(), connection);
+					command.ExecuteNonQuery();
+					connection.Close();
+				}
+				catch (Exception ex)
+				{
+					throw new DataManagerException("Relationship wasn't deleted", ex);
 				}
 			}
 		}
