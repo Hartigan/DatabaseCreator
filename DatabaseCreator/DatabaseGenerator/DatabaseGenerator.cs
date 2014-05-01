@@ -115,10 +115,10 @@ namespace DatabaseGenerator
 			query.AppendLine("[Parent] [int] NOT NULL,");
 			query.AppendLine("[Child] [int] NOT NULL,");
 			query.AppendLine(") ON [PRIMARY]");
-			query.AppendLine("ALTER TABLE [" + relationship.Name + "]  WITH CHECK ADD  CONSTRAINT [FK_" + relationship.Name + "_" + relationship.ParentType.Name + "] FOREIGN KEY([Parent])");
+			query.AppendLine("ALTER TABLE [" + relationship.Name + "]  WITH CHECK ADD  CONSTRAINT [FK_Parent_" + relationship.Name + "_" + relationship.ParentType.Name + "] FOREIGN KEY([Parent])");
 			query.AppendLine("REFERENCES [" + relationship.ParentType.Name + "] ([id])");
 			query.AppendLine("ALTER TABLE [" + relationship.Name + "] CHECK CONSTRAINT [FK_" + relationship.Name + "_" + relationship.ParentType.Name + "]");
-			query.AppendLine("ALTER TABLE [" + relationship.Name + "]  WITH CHECK ADD  CONSTRAINT [FK_" + relationship.Name + "_" + relationship.ChildType.Name + "] FOREIGN KEY([Child])");
+			query.AppendLine("ALTER TABLE [" + relationship.Name + "]  WITH CHECK ADD  CONSTRAINT [FK_Child_" + relationship.Name + "_" + relationship.ChildType.Name + "] FOREIGN KEY([Child])");
 			query.AppendLine("REFERENCES [" + relationship.ChildType.Name + "] ([id])");
 			query.AppendLine("ALTER TABLE [" + relationship.Name + "] CHECK CONSTRAINT [FK_" + relationship.Name + "_" + relationship.ChildType.Name + "]");
 			query.AppendLine("CREATE NONCLUSTERED INDEX [Index_" + relationship.Name + "_Parent] ON [" + relationship.Name + "]");
