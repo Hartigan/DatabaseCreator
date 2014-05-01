@@ -70,6 +70,73 @@ namespace CoreManager
 			return result;
 		}
 
+		public XDocument GetObjectByTypeAndId(XDocument doc)
+		{
+			XDocument result = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
+			XElement root = new XElement("objects");
+			result.Add(root);
+
+			XElement objectTypes = doc.Element("objects");
+			foreach (XElement xmlType in objectTypes.Elements("object"))
+			{
+				string strTypeId = xmlType.Attribute("typeId").Value;
+				int typeId;
+				if (!int.TryParse(strTypeId, out typeId))
+				{
+					throw new DataManagerException("Invalid typeId");
+				}
+
+				string strId = xmlType.Attribute("Id").Value;
+				int id;
+				if (!int.TryParse(strId, out id))
+				{
+					throw new DataManagerException("Invalid id");
+				}
+
+				using (Domain.Interfaces.IRepository repository = new EntityFrameworkDAL.EFRepository())
+				{
+					Domain.Type type = repository.Types.Single(x => x.Id == typeId);
+
+					SqlConnection connection = new SqlConnection(type.Database.ServerConnectionString);
+
+					string columnNames = "Id," + string.Join(",", type.Properies.Select(x => x.Name));
+					StringBuilder query = new StringBuilder();
+					query.AppendLine("USE [" + type.Database.DatabaseName + "]");
+					query.Append("SELECT ");
+					query.AppendLine(columnNames);
+					query.AppendLine("FROM [" + type.Name + "]");
+					query.AppendLine("WHERE Id = " + id);
+
+					try
+					{
+						connection.Open();
+						SqlCommand command = new SqlCommand(query.ToString(), connection);
+						SqlDataReader dataReader = command.ExecuteReader();
+						while (dataReader.Read())
+						{
+							XElement xmlObject = new XElement("object");
+							xmlObject.Add(new XAttribute("type", type.Name));
+							xmlObject.Add(new XAttribute("id", dataReader["Id"].ToString()));
+							xmlObject.Add(new XAttribute("typeId", type.Id));
+							foreach (Domain.Property property in type.Properies)
+							{
+								XElement xmlProperty = new XElement(property.Name, dataReader[property.Name]);
+								xmlObject.Add(xmlProperty);
+							}
+							root.Add(xmlObject);
+						}
+						connection.Close();
+					}
+					catch (Exception ex)
+					{
+						throw new DataManagerException("Invalid operation", ex);
+					}
+				}
+			}
+
+			return result;
+		}
+
 		public void AddObjects(XDocument objects)
 		{
 			XElement root = objects.Element("objects");
