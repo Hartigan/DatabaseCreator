@@ -1,0 +1,90 @@
+﻿@model Domain.Type
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/table.css")" />
+	<script src="@Url.Content("~/Scripts/jquery-2.0.2.js")"></script>
+	<title>Type</title>
+</head>
+<body>
+	@using (Html.BeginForm()) {
+		@Html.AntiForgeryToken()
+		@Html.ValidationSummary(true)
+
+		<fieldset>
+			<legend>Type</legend>
+
+			<div class="editor-label">
+				@Html.LabelFor(model => model.Name)
+			</div>
+			<div class="editor-field">
+				@Html.EditorFor(model => model.Name)
+				@Html.ValidationMessageFor(model => model.Name)
+			</div>
+			<table class="gridtable">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>IsIndexed</th>
+						<th>IsRequired</th>
+						<th>Sql type</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody id="properties">
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td>
+							<a href="#" class="add-property">Add</a>
+							<script type="text/javascript">
+								function removeProperty() {
+									debugger;
+									var parent = $(this).parent().parent();
+									parent.remove();
+								}
+
+								$('.add-property').click(function () {
+									var nextIndex = 0;
+									var lastRow = $('#properties').siblings('.row:last');
+									if (lastRow.length > 0) {
+										nextIndex = parseInt(/\[(\d+)\]/.exec(lastRow.attr('name'))[1], 10) + 1;
+									}
+
+									var namePrefix = 'Properties[' + nextIndex + ']';
+									var newItem = '<tr class="row" name="' + namePrefix + '">\n'
+													+ '<td><input type="text" name="' + namePrefix + '.Name" /></td>\n'
+													+ '<td><input type="checkbox" name="' + namePrefix + '.IsIndexed" /></td>\n'
+													+ '<td><input type="checkbox" name="' + namePrefix + '.IsReqired" /></td>\n'
+													+ '<td><input type="text" name="' + namePrefix + '.SqlType" /></td>\n'
+													+ '<td><a href="#" class="remove-property">Remove</a></td>\n'
+													+ '</tr>';
+									$('#properties').before(newItem);
+									$('.row').on('click', '.remove-property', removeProperty);
+								});
+							</script>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<p>
+				<input type="submit" value="Create" />
+			</p>
+		</fieldset>
+	}
+
+	<div>
+		@Html.ActionLink("Back to List", "Index")
+	</div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Domain.Database>
+
+<table class="gridtable">
+	<thead>
+		<tr>
+			<th>DatabaseId</th>
+			<th>Created</th>
+			<th>Connection string</th>
+			<th>Name</th>
+			<th>Server</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (Domain.Database database in Model)
+		{
+			Html.RenderPartial("DatabaseRow", database);
+		}
+		<tr>
+			<td />
+			<td />
+			<td />
+			<td />
+			<td />
+			<td>@Html.ActionLink("new","CreateDatabase","Metadata")</td>
+		</tr>
+	</tbody>
+</table>

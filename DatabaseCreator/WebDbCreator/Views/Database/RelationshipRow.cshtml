@@ -1,0 +1,22 @@
+﻿@model Domain.Relationship
+
+<tr>
+	<td>
+		@Model.Id
+	</td>
+	<td>
+		@Model.Created
+	</td>
+	<td>
+		@Model.Name
+	</td>
+	<td>
+		@Html.ActionLink(Model.ParentType.Name, "Metadata", "Type", new { typeId = Model.ParentType.Id }, null)
+	</td>
+	<td>
+		@Html.ActionLink(Model.ChildType.Name, "Metadata", "Type", new { typeId = Model.ChildType.Id }, null)
+	</td>
+	<td>
+		@Html.ActionLink("delete", "DeleteRelationship", "Database", new { relationshipId = Model.Id }, null)
+	</td>
+</tr>

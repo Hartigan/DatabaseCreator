@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Domain.Type>
+
+<table class="gridtable">
+	<thead>
+		<tr>
+			<th>TypeId</th>
+			<th>Created</th>
+			<th>Name</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (Domain.Type type in Model)
+		{
+			Html.RenderPartial("TypeRow", type);
+		}
+		<tr>
+			<td />
+			<td />
+			<td />
+			<td>@Html.ActionLink("new", "CreateType", "Database", new { databaseId = Request.Params["databaseId"] }, null)</td>
+		</tr>
+	</tbody>
+</table>

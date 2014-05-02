@@ -1,0 +1,6 @@
+﻿@model IEnumerable<Domain.Type>
+
+@foreach (Domain.Type type in Model)
+{
+	<div><button class="myButton" onclick="$('#user_content').load('/Data/TypeContent/?typeId=' + '@type.Id')">@type.Name</button></div>
+}

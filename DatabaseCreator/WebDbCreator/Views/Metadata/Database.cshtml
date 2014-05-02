@@ -1,0 +1,41 @@
+﻿@model Domain.Database
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Database</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ServerConnectionString)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ServerConnectionString)
+            @Html.ValidationMessageFor(model => model.ServerConnectionString)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DatabaseName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DatabaseName)
+            @Html.ValidationMessageFor(model => model.DatabaseName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ServerName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ServerName)
+            @Html.ValidationMessageFor(model => model.ServerName)
+        </div>
+        <p>
+            <input  class="myButton" type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

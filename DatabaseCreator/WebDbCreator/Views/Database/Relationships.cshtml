@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Domain.Relationship>
+
+<table class="gridtable">
+	<thead>
+		<tr>
+			<th>RelationshipId</th>
+			<th>Created</th>
+			<th>Name</th>
+			<th>Parent</th>
+			<th>Child</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (Domain.Relationship relationship in Model)
+		{
+			Html.RenderPartial("RelationshipRow", relationship);
+		}
+		<tr>
+			<td />
+			<td />
+			<td />
+			<td />
+			<td />
+			<td>@Html.ActionLink("new", "CreateRelationship", "Database", new { databaseId = Request.Params["databaseId"] }, null)</td>
+		</tr>
+	</tbody>
+</table>

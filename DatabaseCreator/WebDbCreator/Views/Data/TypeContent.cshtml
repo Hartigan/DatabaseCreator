@@ -1,0 +1,47 @@
+﻿@model Tuple<IEnumerable<Domain.Property>,System.Xml.Linq.XDocument>
+
+<table class="gridtable">
+	<thead>
+		<tr>
+			<th>Id</th>
+			@foreach(Domain.Property property in Model.Item1)
+			{
+				<th>@property.Name</th>
+			}
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		@{
+			System.Xml.Linq.XElement root = Model.Item2.Element("objects");
+			foreach (System.Xml.Linq.XElement obj in root.Elements("object"))
+			{
+				<tr>
+					<td>@obj.Attribute("id").Value</td>
+					@foreach(Domain.Property property in Model.Item1)
+					{
+						System.Xml.Linq.XElement xmlProperty = obj.Element(property.Name);
+						if (xmlProperty == null)
+						{
+							<td></td>
+						}
+						else
+						{
+							<td>@xmlProperty.Value</td>
+						}
+					}
+					<td>delete view</td>
+				</tr>
+			}
+			
+			<tr>
+				@for(int i=0;i<Model.Item1.Count() + 1;i++)
+				{
+					<td></td>
+				}
+				<td>add</td>
+			</tr>
+		}
+		
+	</tbody>
+</table>

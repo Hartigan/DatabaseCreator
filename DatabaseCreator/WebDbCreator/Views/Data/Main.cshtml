@@ -1,0 +1,18 @@
+﻿@model Domain.Database
+
+@{
+    ViewBag.Title = "Main";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+@section menu{
+	@{
+		Html.RenderAction("Types", new { databaseId = Model.Id });
+	}	
+}
+
+@section content{
+	<div id="user_content">
+
+	</div>
+}

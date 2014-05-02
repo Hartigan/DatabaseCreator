@@ -1,0 +1,17 @@
+﻿@model Domain.Type
+
+<tr>
+	<td>
+		@Model.Id
+	</td>
+	<td>
+		@Model.Created
+	</td>
+	<td>
+		@Model.Name
+	</td>
+	<td>
+		@Html.ActionLink("delete", "DeleteType", "Database", new { typeId = Model.Id }, null)
+		@Html.ActionLink("view", "Metadata", "Type", new { typeId = Model.Id }, null)
+	</td>
+</tr>

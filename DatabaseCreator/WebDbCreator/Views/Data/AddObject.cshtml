@@ -1,0 +1,34 @@
+﻿@model Domain.Type
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/table.css")" />
+	<script src="@Url.Content("~/Scripts/jquery-2.0.2.js")"></script>		
+	<title>AddObject</title>
+</head>
+<body>
+	<div>
+		@using (Html.BeginForm())
+		{
+			<table class="gridtable">
+				<thead>
+					<tr>
+						<td>Property</td>
+						<td>Value</td>
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+		}
+	</div>
+</body>
+</html>

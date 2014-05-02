@@ -1,0 +1,39 @@
+﻿body {
+	background-color:white;
+}
+ 
+#wrapper {
+	width:80%;
+	border-style:solid;
+	border-color:black;
+	border-width:medium;
+	background-color:white;
+	margin-left:auto;
+	margin-right:auto;
+}
+ 
+header {
+	width:100%;
+	background-color:gray;
+}
+ 
+nav {
+	width:30%;
+	background-color:white;
+	float:left;
+	height:600px;
+}
+ 
+#content {
+	width:70%;
+	background-color:white;
+	float:right;
+	height:600px;
+}
+ 
+footer {
+	clear:both;
+	text-align:center;
+	width:100%;
+	background-color:gray;
+}

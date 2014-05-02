@@ -1,0 +1,22 @@
+﻿@model int
+
+@{
+    ViewBag.Title = "Metadata";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+	var myApp = { databaseId: '@Model' };
+</script>
+
+@section menu{
+	<div><a href="@Url.Action("Index","Main")" class="myButton">Back</a></div>
+	<div><button class="myButton" onclick="$('#user_content').load('/Database/Types?databaseId=' + myApp.databaseId)">Types</button></div>
+	<div><button class="myButton" onclick="$('#user_content').load('/Database/Relationships?databaseId=' + myApp.databaseId)">Relationship</button></div>
+}
+
+@section content{
+	<div id="user_content">
+
+	</div>
+}

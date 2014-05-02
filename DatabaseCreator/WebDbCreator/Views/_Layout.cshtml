@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "_Layout";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/layout.css")" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/table.css")" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/button.css")" />
+	@RenderBody()
+	<script type="text/javascript" src="@Url.Content("~/Scripts/jquery-2.0.2.js")"></script>
+</head>
+
+<body>
+
+	<div id="wrapper">
+
+
+		<header>
+			<h1>Database creator</h1>
+		</header> 
+
+		<nav>
+			@RenderSection("menu", false)
+		</nav> 
+
+		<div id="content">
+			@RenderSection("content", false)
+		</div> 
+
+		<footer>
+			<div style="align-content:center">Safonov Anatoli 052002</div>
+		</footer> 
+	</div> 
+</body>
+</html>

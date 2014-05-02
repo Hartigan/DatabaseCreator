@@ -1,0 +1,64 @@
+﻿@model Domain.Relationship
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/table.css")" />
+	<script src="@Url.Content("~/Scripts/jquery-2.0.2.js")"></script>
+	<title>Relationship</title>
+</head>
+<body>
+	@using (Html.BeginForm()) {
+		@Html.AntiForgeryToken()
+		@Html.ValidationSummary(true)
+
+		<fieldset>
+			<legend>Relationship</legend>
+
+			<div class="editor-label">
+				@Html.LabelFor(model => model.Name)
+			</div>
+			<div class="editor-field">
+				@Html.EditorFor(model => model.Name)
+				@Html.ValidationMessageFor(model => model.Name)
+			</div>
+			<table class="gridtable">
+				<thead>
+					<tr>
+						<th>Parent</th>
+						<th>Child</th>
+						<th>Type name</th>
+					</tr>
+				</thead>
+				<tbody>
+					@using (Domain.Interfaces.IRepository repository = new EntityFrameworkDAL.EFRepository())
+					{
+						int databaseId = int.Parse(Request.Params["databaseId"]);
+						foreach (Domain.Type type in repository.Types.Where(x=>x.Database.Id == databaseId).AsQueryable().ToList())
+						{
+							<tr>
+								<td><input type="radio" name="parent" value="@type.Id" /></td>
+								<td><input type="radio" name="child" value="@type.Id" /></td>
+								<td>@Html.ActionLink(type.Name, "Metadata", "Type", new { typeId = type.Id }, null)</td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
+			<p>
+				<input type="submit" value="Create" />
+			</p>
+		</fieldset>
+	}
+
+	<div>
+		@Html.ActionLink("Back to List", "Index")
+	</div>
+</body>
+</html>

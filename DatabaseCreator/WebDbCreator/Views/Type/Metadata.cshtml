@@ -1,0 +1,33 @@
+﻿@model Domain.Type
+
+@{
+    ViewBag.Title = "Metadata";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+@section menu{
+	<div>
+		<a href="@Url.Action("Metadata","Database",new { databaseId = Model.Database.Id })" class="myButton">Back</a>
+	</div>
+}
+
+@section content{
+	<table class="gridtable">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Created</th>
+				<th>Name</th>
+				<th>Sql type</th>
+				<th>Is required</th>
+				<th>Is indexed</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (Domain.Property property in Model.Properies)
+			{
+				Html.RenderPartial("PropertyRow", property);
+			}
+		</tbody>
+	</table>
+}

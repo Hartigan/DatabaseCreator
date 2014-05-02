@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Metadata";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+@section menu{
+	<div>
+		<button class="myButton" onclick="$('#user_content').load('/Metadata/Databases')">Databases</button>
+	</div>
+}
+
+@section content{
+	<div id="user_content">
+
+	</div>
+}

@@ -1,0 +1,24 @@
+﻿@model Domain.Database
+
+<tr>
+	<td>
+		@Model.Id
+	</td>
+	<td>
+		@Model.Created
+	</td>
+	<td>
+		@Model.ServerConnectionString
+	</td>
+	<td>
+		@Model.DatabaseName
+	</td>
+	<td>
+		@Model.ServerName
+	</td>
+	<td>
+		@Html.ActionLink("delete", "DeleteDatabase", "Metadata", new { databaseId = Model.Id }, null)
+		@Html.ActionLink("view", "Metadata", "Database", new { databaseId = Model.Id }, null)
+		@Html.ActionLink("data", "Main", "Data", new { databaseId = Model.Id }, null)
+	</td>
+</tr>
