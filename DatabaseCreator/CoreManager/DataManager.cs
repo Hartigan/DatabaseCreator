@@ -137,9 +137,12 @@ namespace CoreManager
 			return result;
 		}
 
-		public void AddObjects(XDocument objects)
+		public XDocument AddObjects(XDocument objects)
 		{
 			XElement root = objects.Element("objects");
+			XDocument result = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
+			XElement rootResult = new XElement("objects");
+			result.Add(rootResult);
 
 			foreach(XElement xmlObject in root.Elements("object"))
 			{
@@ -178,15 +181,19 @@ namespace CoreManager
 					query.AppendLine("(");
 					query.AppendLine(columnNames);
 					query.AppendLine(")");
+					query.AppendLine("OUTPUT INSERTED.Id");
 					query.AppendLine("VALUES");
 					query.AppendLine("(");
 					query.AppendLine(allValues);
 					query.AppendLine(")");
+
 					try
 					{
 						connection.Open();
 						SqlCommand command = new SqlCommand(query.ToString(), connection);
-						command.ExecuteNonQuery();
+						int objectId = (int)command.ExecuteScalar();
+						rootResult.Add(new XElement("object", new XAttribute("id",objectId),
+															new XAttribute("typeId",typeId)));
 						connection.Close();
 					}
 					catch(Exception ex)
@@ -195,6 +202,8 @@ namespace CoreManager
 					}
 				}
 			}
+
+			return result;
 		}
 
 		public void DeleteObjects(XDocument objects)
