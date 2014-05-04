@@ -48,40 +48,7 @@ namespace WebDbCreator.Controllers
 		[HttpPost]
 		public ActionResult CreateType(Domain.Type type, int databaseId)
 		{
-			IEnumerable<string> formAllKeys = Request.Form.AllKeys;
-			IEnumerable<string> propertiesKeys = formAllKeys.Where(x => x.Contains("Properties["));
-			Domain.Property[] properies = new Domain.Property[propertiesKeys.Count()];
-
-			Regex getIndex = new Regex(@"(?<=\[)(\d+)(?=\])");
-			foreach(string key in propertiesKeys)
-			{
-				int index = int.Parse(getIndex.Match(key).Value);
-				if (properies[index] == null)
-				{
-					properies[index] = new Domain.Property()
-					{
- 						Type = type
-					};
-				}
-				if (key.Contains(".Name"))
-				{
-					properies[index].Name = Request[key];
-				}
-				else if (key.Contains(".SqlType"))
-				{
-					properies[index].SqlType = Request[key];
-				}
-				else if (key.Contains(".IsReqired"))
-				{
-					properies[index].IsReqired = string.Compare(Request[key], "on", true) == 0 ? true : false;
-				}
-				else if (key.Contains(".IsIndexed"))
-				{
-					properies[index].IsIndexed = string.Compare(Request[key], "on", true) == 0 ? true : false;
-				}
-			}
-			type.Properies = properies.Where(x => x != null).ToList();
-
+			type.Properties = type.Properties.Select(x => { x.Type = type; return x; }).ToList();
 			using(Domain.Interfaces.IRepository repository = new EntityFrameworkDAL.EFRepository())
 			{
 				Domain.Database database = repository.Databases.Single(x=>x.Id == databaseId);

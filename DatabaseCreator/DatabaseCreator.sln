@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreManager", "CoreManager\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "Exceptions\Exceptions.csproj", "{9E0DE38B-D45A-4BA5-A76E-93314CE4489B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebDbCreator", "WebDbCreator\WebDbCreator.csproj", "{C58963C6-96A7-4499-AE52-689D7394CA3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{9E0DE38B-D45A-4BA5-A76E-93314CE4489B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E0DE38B-D45A-4BA5-A76E-93314CE4489B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E0DE38B-D45A-4BA5-A76E-93314CE4489B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C58963C6-96A7-4499-AE52-689D7394CA3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C58963C6-96A7-4499-AE52-689D7394CA3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C58963C6-96A7-4499-AE52-689D7394CA3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C58963C6-96A7-4499-AE52-689D7394CA3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

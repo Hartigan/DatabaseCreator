@@ -45,11 +45,11 @@ namespace DatabaseGenerator
 			query.AppendLine("USE [" + type.Database.DatabaseName + "]");
 			query.AppendLine("CREATE TABLE [" + type.Name + "](");
 			int propertiesCompletedCount = 0;
-			foreach(Domain.Property property in type.Properies)
+			foreach(Domain.Property property in type.Properties)
 			{
 				query.Append("[" + property.Name + "] ");
 				query.Append(property.SqlType + " ");
-				if (property.IsReqired)
+				if (property.IsRequired)
 				{
 					query.Append("NOT NULL");
 				}
@@ -68,7 +68,7 @@ namespace DatabaseGenerator
 			SqlCommand command = new SqlCommand(query.ToString(), _connection);
 			command.ExecuteNonQuery();
 
-			foreach (Domain.Property property in type.Properies)
+			foreach (Domain.Property property in type.Properties)
 			{
 				if (property.IsIndexed)
 				{
@@ -117,10 +117,10 @@ namespace DatabaseGenerator
 			query.AppendLine(") ON [PRIMARY]");
 			query.AppendLine("ALTER TABLE [" + relationship.Name + "]  WITH CHECK ADD  CONSTRAINT [FK_Parent_" + relationship.Name + "_" + relationship.ParentType.Name + "] FOREIGN KEY([Parent])");
 			query.AppendLine("REFERENCES [" + relationship.ParentType.Name + "] ([id])");
-			query.AppendLine("ALTER TABLE [" + relationship.Name + "] CHECK CONSTRAINT [FK_" + relationship.Name + "_" + relationship.ParentType.Name + "]");
+			query.AppendLine("ALTER TABLE [" + relationship.Name + "] CHECK CONSTRAINT [FK_Parent_" + relationship.Name + "_" + relationship.ParentType.Name + "]");
 			query.AppendLine("ALTER TABLE [" + relationship.Name + "]  WITH CHECK ADD  CONSTRAINT [FK_Child_" + relationship.Name + "_" + relationship.ChildType.Name + "] FOREIGN KEY([Child])");
 			query.AppendLine("REFERENCES [" + relationship.ChildType.Name + "] ([id])");
-			query.AppendLine("ALTER TABLE [" + relationship.Name + "] CHECK CONSTRAINT [FK_" + relationship.Name + "_" + relationship.ChildType.Name + "]");
+			query.AppendLine("ALTER TABLE [" + relationship.Name + "] CHECK CONSTRAINT [FK_Child_" + relationship.Name + "_" + relationship.ChildType.Name + "]");
 			query.AppendLine("CREATE NONCLUSTERED INDEX [Index_" + relationship.Name + "_Parent] ON [" + relationship.Name + "]");
 			query.AppendLine("( [Parent] ASC )");
 			SqlCommand command = new SqlCommand(query.ToString(), _connection);

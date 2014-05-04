@@ -43,7 +43,7 @@ namespace WebDbCreator.Controllers
 			using(Domain.Interfaces.IRepository repository = new EntityFrameworkDAL.EFRepository())
 			{
 				return View("TypeContent",
-					new Tuple<IEnumerable<Domain.Property>,XDocument>(repository.Types.Single(x=>x.Id == typeId).Properies.ToList(),
+					new Tuple<IEnumerable<Domain.Property>,XDocument>(repository.Types.Single(x=>x.Id == typeId).Properties.ToList(),
 																	response));
 			}
 		}
@@ -68,7 +68,7 @@ namespace WebDbCreator.Controllers
 			using(Domain.Interfaces.IRepository repository = new EntityFrameworkDAL.EFRepository())
 			{
 				Domain.Type type = repository.Types.Single(x => x.Id == typeId);
-				type.Properies = type.Properies.ToList();
+				type.Properties = type.Properties.ToList();
 				return View(type);
 			}
 		}

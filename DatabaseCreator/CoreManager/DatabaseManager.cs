@@ -124,7 +124,7 @@ namespace CoreManager
 				type.Modified = DateTime.UtcNow;
 				type.Database = database;
 
-				foreach(Domain.Property property in type.Properies)
+				foreach(Domain.Property property in type.Properties)
 				{
 					property.Modified = property.Created = DateTime.UtcNow;
 				}

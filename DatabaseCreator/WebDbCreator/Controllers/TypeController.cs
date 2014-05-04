@@ -17,7 +17,7 @@ namespace WebDbCreator.Controllers
 			{
 				Domain.Type type = repository.Types.Single(x=>x.Id == typeId);
 				type.Database = type.Database;
-				type.Properies = type.Properies.ToList();
+				type.Properties = type.Properties.ToList();
 				return View("Metadata",type);
 			}
 		}

@@ -14,6 +14,6 @@ namespace Domain
 
 		public virtual Database Database { get; set; }
 
-		public virtual ICollection<Property> Properies { get; set; }
+		public virtual ICollection<Property> Properties { get; set; }
 	}
 }

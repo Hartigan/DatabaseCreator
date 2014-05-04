@@ -62,9 +62,10 @@
 
 									var namePrefix = 'Properties[' + nextIndex + ']';
 									var newItem = '<tr class="row" name="' + namePrefix + '">\n'
+													+ '<input type="hidden" name="' + namePrefix + '.Index" value="cold" />'
 													+ '<td><input type="text" name="' + namePrefix + '.Name" /></td>\n'
 													+ '<td><input type="checkbox" name="' + namePrefix + '.IsIndexed" /></td>\n'
-													+ '<td><input type="checkbox" name="' + namePrefix + '.IsReqired" /></td>\n'
+													+ '<td><input type="checkbox" name="' + namePrefix + '.IsRequired" /></td>\n'
 													+ '<td><input type="text" name="' + namePrefix + '.SqlType" /></td>\n'
 													+ '<td><a href="#" class="remove-property">Remove</a></td>\n'
 													+ '</tr>';

@@ -14,7 +14,7 @@ namespace Domain
 
 		public bool IsIndexed { get; set; }
 
-		public bool IsReqired { get; set; }
+		public bool IsRequired { get; set; }
 
 		public bool IsUnique { get; set; }
 

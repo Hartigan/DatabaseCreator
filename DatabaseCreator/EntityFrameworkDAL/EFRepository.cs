@@ -56,7 +56,7 @@ namespace EntityFrameworkDAL
 			Property obj = _context.Properties.Single(x => x.Id == property.Id);
 			obj.Created = property.Created;
 			obj.IsIndexed = property.IsIndexed;
-			obj.IsReqired = property.IsReqired;
+			obj.IsRequired = property.IsRequired;
 			obj.IsUnique = property.IsUnique;
 			obj.Modified = property.Modified;
 			obj.Name = property.Name;

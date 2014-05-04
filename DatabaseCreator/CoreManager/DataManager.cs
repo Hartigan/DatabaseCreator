@@ -33,7 +33,7 @@ namespace CoreManager
 
 					SqlConnection connection = new SqlConnection(type.Database.ServerConnectionString);
 
-					string columnNames = "Id," + string.Join(",", type.Properies.Select(x => x.Name));
+					string columnNames = "Id," + string.Join(",", type.Properties.Select(x => x.Name));
 					StringBuilder query = new StringBuilder();
 					query.AppendLine("USE [" + type.Database.DatabaseName + "]");
 					query.Append("SELECT ");
@@ -51,7 +51,7 @@ namespace CoreManager
 							xmlObject.Add(new XAttribute("type",type.Name));
 							xmlObject.Add(new XAttribute("id",dataReader["Id"].ToString()));
 							xmlObject.Add(new XAttribute("typeId",type.Id));
-							foreach(Domain.Property property in type.Properies)
+							foreach(Domain.Property property in type.Properties)
 							{
 								XElement xmlProperty = new XElement(property.Name, dataReader[property.Name]);
 								xmlObject.Add(xmlProperty);
@@ -99,7 +99,7 @@ namespace CoreManager
 
 					SqlConnection connection = new SqlConnection(type.Database.ServerConnectionString);
 
-					string columnNames = "Id," + string.Join(",", type.Properies.Select(x => x.Name));
+					string columnNames = "Id," + string.Join(",", type.Properties.Select(x => x.Name));
 					StringBuilder query = new StringBuilder();
 					query.AppendLine("USE [" + type.Database.DatabaseName + "]");
 					query.Append("SELECT ");
@@ -118,7 +118,7 @@ namespace CoreManager
 							xmlObject.Add(new XAttribute("type", type.Name));
 							xmlObject.Add(new XAttribute("id", dataReader["Id"].ToString()));
 							xmlObject.Add(new XAttribute("typeId", type.Id));
-							foreach (Domain.Property property in type.Properies)
+							foreach (Domain.Property property in type.Properties)
 							{
 								XElement xmlProperty = new XElement(property.Name, dataReader[property.Name]);
 								xmlObject.Add(xmlProperty);
@@ -164,7 +164,7 @@ namespace CoreManager
 
 					SqlConnection connection = new SqlConnection(type.Database.ServerConnectionString);
 
-					Domain.Property[] properties = type.Properies.Where(x => xmlObject.Elements().Any(y => string.Compare(y.Name.ToString(), x.Name, true) == 0)).ToArray();
+					Domain.Property[] properties = type.Properties.Where(x => xmlObject.Elements().Any(y => string.Compare(y.Name.ToString(), x.Name, true) == 0)).ToArray();
 					string[] values = new string[properties.Length];
 					for(int propertyIndex=0;propertyIndex<properties.Length;propertyIndex++)
 					{
@@ -285,7 +285,7 @@ namespace CoreManager
 
 					SqlConnection connection = new SqlConnection(type.Database.ServerConnectionString);
 
-					Domain.Property[] properties = type.Properies.Where(x => xmlObject.Elements().Any(y => string.Compare(y.Name.ToString(), x.Name, true) == 0)).ToArray();
+					Domain.Property[] properties = type.Properties.Where(x => xmlObject.Elements().Any(y => string.Compare(y.Name.ToString(), x.Name, true) == 0)).ToArray();
 					string[] values = new string[properties.Length];
 					for (int propertyIndex = 0; propertyIndex < properties.Length; propertyIndex++)
 					{
@@ -343,7 +343,7 @@ namespace CoreManager
 																				new XAttribute("relationshipId", relationship.Id));
 						root.Add(xmlRelationship);
 
-						string columnNames = "ch.Id," + string.Join(",", type.Properies.Select(x => "ch."+x.Name));
+						string columnNames = "ch.Id," + string.Join(",", type.Properties.Select(x => "ch."+x.Name));
 						query = new StringBuilder();
 						query.AppendLine("USE [" + type.Database.DatabaseName + "]");
 						query.Append("SELECT ");
@@ -361,7 +361,7 @@ namespace CoreManager
 							xmlObject.Add(new XAttribute("type", type.Name));
 							xmlObject.Add(new XAttribute("id", dataReader["Id"].ToString()));
 							xmlObject.Add(new XAttribute("typeId", type.Id));
-							foreach (Domain.Property property in type.Properies)
+							foreach (Domain.Property property in type.Properties)
 							{
 								XElement xmlProperty = new XElement(property.Name, dataReader[property.Name]);
 								xmlObject.Add(xmlProperty);
