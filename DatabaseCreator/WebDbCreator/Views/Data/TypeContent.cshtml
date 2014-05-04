@@ -1,10 +1,10 @@
-﻿@model Tuple<IEnumerable<Domain.Property>,System.Xml.Linq.XDocument>
+﻿@model Tuple<Domain.Type,System.Xml.Linq.XDocument>
 
 <table class="gridtable">
 	<thead>
 		<tr>
 			<th>Id</th>
-			@foreach(Domain.Property property in Model.Item1)
+			@foreach(Domain.Property property in Model.Item1.Properties)
 			{
 				<th>@property.Name</th>
 			}
@@ -18,7 +18,7 @@
 			{
 				<tr>
 					<td>@obj.Attribute("id").Value</td>
-					@foreach(Domain.Property property in Model.Item1)
+					@foreach(Domain.Property property in Model.Item1.Properties)
 					{
 						System.Xml.Linq.XElement xmlProperty = obj.Element(property.Name);
 						if (xmlProperty == null)
@@ -30,16 +30,16 @@
 							<td>@xmlProperty.Value</td>
 						}
 					}
-					<td>delete view</td>
+					<td>delete @Html.ActionLink("view", "ViewObject", "Data", new { typeId = Model.Item1.Id, objId = int.Parse(obj.Attribute("id").Value) }, null)</td>
 				</tr>
 			}
 			
 			<tr>
-				@for(int i=0;i<Model.Item1.Count() + 1;i++)
+				@for(int i=0;i<Model.Item1.Properties.Count() + 1;i++)
 				{
 					<td></td>
 				}
-				<td>add</td>
+				<td>@Html.ActionLink("add","AddObject", "Data", new {typeId = Model.Item1.Id},null)</td>
 			</tr>
 		}
 		

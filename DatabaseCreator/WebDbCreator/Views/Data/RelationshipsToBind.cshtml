@@ -1,0 +1,43 @@
+﻿@model List<Tuple<Domain.Relationship, System.Xml.Linq.XDocument>>
+
+<h2>Relationships</h2>
+@foreach(Tuple<Domain.Relationship, System.Xml.Linq.XDocument> relationship in Model)
+{
+	<h3>@relationship.Item1.Name</h3>
+	<table class="gridtable">
+		<thead>
+			<tr>
+				<th>Add</th>
+				<th>Id</th>
+				@foreach(Domain.Property property in relationship.Item1.ChildType.Properties)
+				{
+					<th>@property.Name</th>
+				}
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				System.Xml.Linq.XElement root = relationship.Item2.Element("objects");
+				foreach (System.Xml.Linq.XElement obj in root.Elements("object"))
+				{
+				<tr>
+					<td><input type="checkbox" name="@string.Format("relationship_{0}_{1}", relationship.Item1.Id, @obj.Attribute("id").Value)" value="true" /></td>
+					<td>@obj.Attribute("id").Value</td>
+					@foreach (Domain.Property property in relationship.Item1.ChildType.Properties)
+					{
+						System.Xml.Linq.XElement xmlProperty = obj.Element(property.Name);
+						if (xmlProperty == null)
+						{
+							<td></td>
+						}
+						else
+						{
+							<td>@xmlProperty.Value</td>
+						}
+					}
+				</tr>
+				}
+			}
+		</tbody>
+	</table>
+}

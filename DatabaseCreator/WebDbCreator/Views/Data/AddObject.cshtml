@@ -10,6 +10,7 @@
 <head>
 	<meta name="viewport" content="width=device-width" />
 	<link rel="stylesheet" href="@Url.Content("~/Content/table.css")" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/button.css")" />
 	<script src="@Url.Content("~/Scripts/jquery-2.0.2.js")"></script>		
 	<title>AddObject</title>
 </head>
@@ -17,17 +18,46 @@
 	<div>
 		@using (Html.BeginForm())
 		{
-			<table class="gridtable">
-				<thead>
-					<tr>
-						<td>Property</td>
-						<td>Value</td>
-					</tr>
-				</thead>
-				<tbody>
-
-				</tbody>
-			</table>
+			<div id="object">
+				<table class="gridtable">
+					<thead>
+						<tr>
+							<th>Property</th>
+							<th>Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach(Domain.Property property in Model.Properties)
+						{
+							<tr>
+								<td>@property.Name</td>
+								<td>
+								@{
+									if (property.SqlType.Contains("datetime"))
+									{
+										<input name="object_@property.Name" type="date"/>
+									}
+									else if (property.SqlType.Contains("bit"))
+									{
+										<input name="object_@property.Name" type="checkbox" value="true" />
+									}
+									else
+									{
+										<input name="object_@property.Name" type="text" />
+									}
+								}
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+				<input class="myButton" type="submit" value="Create" />
+			</div>
+			<div id="relationships">
+				@{
+					Html.RenderAction("RelationshipsToBind", new { typeId = Model.Id });
+				}
+			</div>
 		}
 	</div>
 </body>

@@ -1,0 +1,91 @@
+﻿@model Tuple<Domain.Type, IEnumerable<Domain.Relationship>, System.Xml.Linq.XDocument>
+
+@{
+	ViewBag.Title = "ViewObject";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/table.css")" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/button.css")" />
+	<script src="@Url.Content("~/Scripts/jquery-2.0.2.js")"></script>
+	<title>AddObject</title>
+</head>
+<body>
+	<div id="object">
+		<table class="gridtable">
+			<thead>
+				<tr>
+					<th>Property</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+				System.Xml.Linq.XElement content = Model.Item3.Element("content");
+				System.Xml.Linq.XElement objects = content.Element("objects");
+				System.Xml.Linq.XElement obj = objects.Element("object");
+				<tr>
+					<td>Id</td>
+					<td>@obj.Attribute("id").Value</td>
+				</tr>
+				foreach(Domain.Property property in Model.Item1.Properties)
+				{
+					<tr>
+						<td>@property.Name</td>
+						<td>@(obj.Element(property.Name) == null ? "null" : obj.Element(property.Name).Value)</td>
+					</tr>
+				}
+				}
+			</tbody>
+		</table>
+	</div>
+	<div id="relationships">
+		<h2>Relationships</h2>
+		@{
+			foreach(Domain.Relationship relationship in Model.Item2)
+			{
+				<h3>@relationship.Name</h3>
+				<table class="gridtable">
+					<thead>
+						<tr>
+							<th>Id</th>
+							@foreach(Domain.Property property in relationship.ChildType.Properties)
+							{
+								<th>@property.Name</th>
+							}
+						</tr>
+					</thead>
+					<tbody>
+						
+						@{
+							IEnumerable<System.Xml.Linq.XElement> relObjs = Model.Item3.Element("content").Element("relationships").Elements("relationship").First(x=>string.Compare(x.Attribute("relationshipId").Value, relationship.Id.ToString(),true) == 0).Elements("object");
+							foreach(System.Xml.Linq.XElement relObj in relObjs)
+							{
+								<tr>
+									<td>@relObj.Attribute("id").Value</td>
+									@foreach(Domain.Property property in relationship.ChildType.Properties)
+									{
+										System.Xml.Linq.XElement xmlProperty = relObj.Element(property.Name);
+										if (xmlProperty == null)
+										{
+											<td></td>
+										}
+										else
+										{
+											<td>@xmlProperty.Value</td>
+										}
+									}
+								</tr>
+							}
+						}
+					</tbody>
+				</table>
+			}
+		}
+	</div>
+</body>
+</html>

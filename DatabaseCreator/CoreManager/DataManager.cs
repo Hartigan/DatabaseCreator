@@ -86,7 +86,7 @@ namespace CoreManager
 					throw new DataManagerException("Invalid typeId");
 				}
 
-				string strId = xmlType.Attribute("Id").Value;
+				string strId = xmlType.Attribute("id").Value;
 				int id;
 				if (!int.TryParse(strId, out id))
 				{
@@ -352,7 +352,7 @@ namespace CoreManager
 																				new XAttribute("relationshipId", relationship.Id));
 						root.Add(xmlRelationship);
 
-						string columnNames = "ch.Id," + string.Join(",", type.Properties.Select(x => "ch."+x.Name));
+						string columnNames = "ch.Id," + string.Join(",", relationship.ChildType.Properties.Select(x => "ch." + x.Name));
 						query = new StringBuilder();
 						query.AppendLine("USE [" + type.Database.DatabaseName + "]");
 						query.Append("SELECT ");
@@ -369,8 +369,8 @@ namespace CoreManager
 							XElement xmlObject = new XElement("object");
 							xmlObject.Add(new XAttribute("type", type.Name));
 							xmlObject.Add(new XAttribute("id", dataReader["Id"].ToString()));
-							xmlObject.Add(new XAttribute("typeId", type.Id));
-							foreach (Domain.Property property in type.Properties)
+							xmlObject.Add(new XAttribute("typeId", relationship.ChildType.Id));
+							foreach (Domain.Property property in relationship.ChildType.Properties)
 							{
 								XElement xmlProperty = new XElement(property.Name, dataReader[property.Name]);
 								xmlObject.Add(xmlProperty);
