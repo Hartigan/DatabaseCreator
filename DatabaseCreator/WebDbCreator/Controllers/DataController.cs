@@ -42,9 +42,10 @@ namespace WebDbCreator.Controllers
 
 			using(Domain.Interfaces.IRepository repository = new EntityFrameworkDAL.EFRepository())
 			{
+				Domain.Type type = repository.Types.Single(x=>x.Id == typeId);
+				type.Properties = type.Properties.ToList();
 				return View("TypeContent",
-					new Tuple<IEnumerable<Domain.Property>,XDocument>(repository.Types.Single(x=>x.Id == typeId).Properties.ToList(),
-																	response));
+					new Tuple<Domain.Type,XDocument>(type, response));
 			}
 		}
 
