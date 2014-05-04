@@ -30,7 +30,7 @@
 							<td>@xmlProperty.Value</td>
 						}
 					}
-					<td>delete @Html.ActionLink("view", "ViewObject", "Data", new { typeId = Model.Item1.Id, objId = int.Parse(obj.Attribute("id").Value) }, null)</td>
+					<td>delete @Html.ActionLink("edit", "EditObject", "Data", new { typeId = Model.Item1.Id, objId = int.Parse(obj.Attribute("id").Value) }, null) @Html.ActionLink("view", "ViewObject", "Data", new { typeId = Model.Item1.Id, objId = int.Parse(obj.Attribute("id").Value) }, null)</td>
 				</tr>
 			}
 			

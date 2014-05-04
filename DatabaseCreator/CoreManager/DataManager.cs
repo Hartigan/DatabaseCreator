@@ -273,7 +273,7 @@ namespace CoreManager
 					throw new DataManagerException("Invalid typeId");
 				}
 
-				string strId = xmlObject.Attribute("Id").Value;
+				string strId = xmlObject.Attribute("id").Value;
 				int id;
 				if (!int.TryParse(strId, out id))
 				{
@@ -298,12 +298,12 @@ namespace CoreManager
 					string[] values = new string[properties.Length];
 					for (int propertyIndex = 0; propertyIndex < properties.Length; propertyIndex++)
 					{
-						values[propertyIndex] = "SET " + properties[propertyIndex].Name + " = CONVERT(" + properties[propertyIndex].SqlType + ",'" + xmlObject.Element(properties[propertyIndex].Name).Value + "')";
+						values[propertyIndex] = properties[propertyIndex].Name + " = CONVERT(" + properties[propertyIndex].SqlType + ",'" + xmlObject.Element(properties[propertyIndex].Name).Value + "')";
 					}
 					string allValues = string.Join(",", values);
 					StringBuilder query = new StringBuilder();
 					query.AppendLine("USE [" + type.Database.DatabaseName + "]");
-					query.AppendLine("UPDATE [" + type.Name + "]");
+					query.AppendLine("UPDATE [" + type.Name + "] SET ");
 					query.AppendLine(allValues);
 					query.AppendLine("WHERE Id = " + id);
 					try

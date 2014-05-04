@@ -1,0 +1,120 @@
+﻿@model Tuple<Domain.Type, IEnumerable<Tuple<Domain.Relationship, System.Xml.Linq.XDocument>>, System.Xml.Linq.XDocument>
+
+@{
+	ViewBag.Title = "EditObject";
+	System.Xml.Linq.XElement obj = Model.Item3.Element("content").Element("objects").Elements("object").First();
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/table.css")" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/button.css")" />
+	<script src="@Url.Content("~/Scripts/jquery-2.0.2.js")"></script>
+	<title>AddObject</title>
+</head>
+<body>
+	<div>
+		@using (Html.BeginForm())
+		{
+			<div id="object">
+				<table class="gridtable">
+					<thead>
+						<tr>
+							<th>Property</th>
+							<th>Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (Domain.Property property in Model.Item1.Properties)
+						{
+							<tr>
+								<td>@property.Name</td>
+								<td>
+								@{
+									if (property.SqlType.Contains("datetime"))
+									{
+										<input name="object_@property.Name" type="date" value="@(obj.Element(property.Name) == null ? "" : obj.Element(property.Name).Value.Substring(0,10))"/>
+									}
+									else if (property.SqlType.Contains("bit"))
+									{
+										string isChecked = "";
+										if (obj.Element(property.Name) != null && string.Compare(obj.Element(property.Name).Value, "true",true) == 0)
+										{
+											isChecked = "checked";
+										}
+										<input name="object_@property.Name" type="checkbox" value="true" @isChecked />
+									}
+									else
+									{
+										<input name="object_@property.Name" type="text" value="@(obj.Element(property.Name) == null ? "" : obj.Element(property.Name).Value)" />
+									}
+								}
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+				<input class="myButton" type="submit" value="Save" />
+			</div>
+			<div id="relationships">
+				<h2>Relationships</h2>
+				@foreach (Tuple<Domain.Relationship, System.Xml.Linq.XDocument> relationship in Model.Item2)
+				{
+					<h3>@relationship.Item1.Name</h3>
+					<table class="gridtable">
+						<thead>
+							<tr>
+								<th>Add</th>
+								<th>Id</th>
+								@foreach (Domain.Property property in relationship.Item1.ChildType.Properties)
+								{
+									<th>@property.Name</th>
+								}
+							</tr>
+						</thead>
+						<tbody>
+							@{
+								System.Xml.Linq.XElement root = relationship.Item2.Element("objects");
+								foreach (System.Xml.Linq.XElement relObj in root.Elements("object"))
+								{
+									string isChecked = "";
+									if (Model.Item3.Element("content")
+												.Element("relationships")
+												.Elements("relationship")
+												.Where(x => x.Attribute("relationshipId").Value == relationship.Item1.Id.ToString())
+												.First().Elements("object")
+												.Any(x => x.Attribute("id").Value == relObj.Attribute("id").Value))
+									{
+										isChecked = "checked";
+									}
+									<tr>
+										<td><input type="checkbox" name="@string.Format("relationship_{0}_{1}", relationship.Item1.Id, @relObj.Attribute("id").Value)" value="true" @isChecked/></td>
+										<td>@relObj.Attribute("id").Value</td>
+										@foreach (Domain.Property property in relationship.Item1.ChildType.Properties)
+										{
+											System.Xml.Linq.XElement xmlProperty = relObj.Element(property.Name);
+											if (xmlProperty == null)
+											{
+												<td></td>
+											}
+											else
+											{
+												<td>@xmlProperty.Value</td>
+											}
+										}
+									</tr>
+								}
+							}
+						</tbody>
+					</table>
+				}
+			</div>
+		}
+	</div>
+</body>
+</html>
+
+
